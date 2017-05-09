@@ -1,0 +1,159 @@
+<resources>
+    <string name="app_name">标题栏</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "technologically advanced and open to imagination and magic.\n"
+        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
+        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
+        "flexibility of the material creates new affordances that supercede those in the physical "
+        "world, without breaking the rules of physics.\n"
+        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
+        "interact, and exist in space and in relation to each other. Realistic lighting shows "
+        "seams, divides space, and indicates moving parts.\n\n"
+
+        "Bold, graphic, intentional.\n\n"
+
+        "The foundational elements of print based design typography, grids, space, scale, color, "
+        "and use of imagery guide visual treatments. These elements do far more than please the "
+        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
+        "imagery, large scale typography, and intentional white space create a bold and graphic "
+        "interface that immerse the user in the experience.\n"
+        "An emphasis on user actions makes core functionality immediately apparent and provides "
+        "waypoints for the user.\n\n"
+
+        "Motion provides meaning.\n\n"
+
+        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
+        "inflection points that initiate motion, transforming the whole design.\n"
+        "All action takes place in a single environment. Objects are presented to the user without "
+        "breaking the continuity of experience even as they transform and reorganize.\n"
+        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
+        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
+
+        "3D world.\n\n"
+
+        "The material environment is a 3D space, which means all objects have x, y, and z "
+        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
+        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
+        "position along the z-axis and has a standard 1dp thickness.\n"
+        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
+        "emulated by manipulating the y-axis.\n\n"
+
+        "Light and shadow.\n\n"
+
+        "Within the material environment, virtual lights illuminate the scene. Key lights create "
+        "directional shadows, while ambient light creates soft shadows from all angles.\n"
+        "Shadows in the material environment are cast by these two light sources. In Android "
+        "development, shadows occur when light sources are blocked by sheets of material at "
+        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
+        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
+
+        "Resting elevation.\n\n"
+
+        "All material objects, regardless of size, have a resting elevation, or default elevation "
+        "that does not change. If an object changes elevation, it should return to its resting "
+        "elevation as soon as possible.\n\n"
+
+        "Component elevations.\n\n"
+
+        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
+        "does not vary from 6dp in one app to 16dp in another app).\n"
+        "Components may have different resting elevations across platforms, depending on the depth "
+        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
+
+        "Responsive elevation and dynamic elevation offsets.\n\n"
+
+        "Some component types have responsive elevation, meaning they change elevation in response "
+        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
+        "changes are consistently implemented using dynamic elevation offsets.\n"
+        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
+        "to the component’s resting state. They ensure that elevation changes are consistent "
+        "across actions and component types. For example, all components that lift on press have "
+        "the same elevation change relative to their resting elevation.\n"
+        "Once the input event is completed or cancelled, the component will return to its resting "
+        "elevation.\n\n"
+
+        "Avoiding elevation interference.\n\n"
+
+        "Components with responsive elevations may encounter other components as they move between "
+        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
+        "through other material, components avoid interfering with one another any number of ways, "
+        "whether on a per component basis or using the entire app layout.\n"
+        "On a component level, components can move or be removed before they cause interference. "
+        "For example, a floating action button (FAB) can disappear or move off screen before a "
+        "user picks up a card, or it can move if a snackbar appears.\n"
+        "On the layout level, design your app layout to minimize opportunities for interference. "
+        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
+        "when a user tries to pick up one of cards."
+    </string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_coordinator">CoordinatorActivity</string>
+    <string name="large_text_header">
+        "『我的车库里有一条喷火的龙。』\n"
+        "『太稀罕了！』朋友连忙跑到车库中，但没有看见龙。龙在哪里？』\n"
+        "『哦，我忘了说明，这是一条隐身的龙。』\n"
+        "『朋友有些狐疑，不过他建议，可以撒一些粉末在地上，看看龙的爪印是不是会出现。』\n"
+        "『不，这龙是飘在空中的。』\n"
+        "『那既然这条龙在喷火，我们用红外线检测仪做一个热扫描。』\n"
+        "『也不行，隐形的火没有温度。』\n"
+        "『要么对这条龙喷漆，让它现形？』\n"
+        "『不行，这条龙是非物质的，滑不溜丢，油漆不能附着。』\n"
+        "『这样一条看不见摸不着，没有实体，任何仪器都无法探测的龙 和 '根本没有龙’有什么差别？』\n"
+        "——卡尔·萨根《魔鬼出没的世界》\n\n"
+
+        "奥卡姆剃刀原理：当两种说法都能解释相同的事实时，应该相信假设少的那个。\n"
+        "——曹天元《上帝掷骰子吗：量子物理史话》\n"
+        "存在一位看不见、摸不着、任何仪器无法探测的上帝与『没有上帝』有什么差别？由于前者使用的假设是四个，后者才使用一个，在没有更多证据的情况下，我们最好还是倾向于后者。\n\n"
+
+        "『我不需要上帝这个假设。』 数学家拉普拉斯在拿破仑面前如是说。这是无神论者最精悍、最伟大、最自豪的宣言。\n\n"
+
+        "部分朋友提出这样的质疑：描述自然现象时，有神论只需要假设——『上帝这样安排』；无神论则需要从众多公理出发，做更多基本假设。难道有神论更正确？\n\n"
+
+        "这就需要祭出另一利器——休谟公理：一条论述的可信性与其证据的确凿程度成正比，与离奇程度成反比。\n"
+        "无神论有众多实验和理论证据来证明自己的学说，比不可证伪的『上帝假设』更确凿，更详实，因而更可信。\n\n"
+
+        "奥卡姆剃刀原理与休谟公理分别从正反两方面描述了人类理性的两个重要结论——当两种说法都能解释相同的事实时，应该相信证据多、假设少的那个。"
+    </string>
+    <string name="large_text_content_1">
+        "所谓左右手互搏，就是自我博弈，类似于AlphaGo在围棋训练里所使用的自我训练的策略——当想要论证一个观点的时候，同时设想对立的观点可能给出的argument，把自己当成自己观点的假想敌。当重复多次这样的练习并习以为常的时候，所拥有的眼界、分析判断的能力会有相当大的提升。\n\n"
+
+        "在学术中，这种思维方式相当常见，因为一篇论文要经得起各种匿名审稿人的推敲，必定撰稿人自己要自己先推演很多遍，对可能出现的漏洞自圆其说，对改进和不足事先申明。\n\n"
+
+        "但在生活中，这种能力却被忽视，往往我们在陈述一个观点的时候，并没有考虑可能的反驳，以及对反驳的反驳可以给出的反驳，以及对反驳的反驳可以给出的反驳的反驳的反驳……（这个递归可以一直写下去）\n\n"
+
+        "比如一个简单的观点【1】：北京地铁价格应该下调。\n\n"
+
+        "对【1】的一个反驳【2】是：价格下调最终所需要的补贴也是由纳税人来承担，因此实际上，那些赶地铁的人并不能获得好处。\n\n"
+
+        "对【2】的一个反驳【3】是：地铁在北京是垄断的，因此其实际的定价使得它的边际收益高过了边际成本，强制性让地铁运营方降价并不一定需要额外的补贴。\n\n"
+
+        "对【3】的一个反驳【4】是：尽管这样看上去是好的，但是这可能会打击外资在公共设施建设方面的积极性，因此从这个小的方面看，地铁价格下降人们可以享受更便宜的票价，但另一方面，外资可能不再愿意继续建设新的轨线（因为收益不高），可能提供更差的服务。\n\n"
+
+        "对【4】的一个反驳【5】是：如果资本在其他地方有更高的收益率，那么自然资本就应该流向其他领域，而不是用于修建基础设施，而这一部分的工作，可以由政府来实施。\n\n"
+
+        "对【5】的一个反驳【6】是：政府在这类事务上往往效率极其低下，那么实际上，这一部分需要更多的税收收入支撑，而这是相当不划算的。\n\n"
+
+        "对【6】的一个反驳【7】是：税收收入的支撑用在公共领域，伴随的是财富再分配。而相对来讲，收入更低的人相对来讲更会使用公共交通出行，而较高的人则会选择私家车之类，因此这类再分配虽然牺牲了效率，但是更有利于公平，仍然是有必要的。\n\n"
+
+        "……\n\n"
+
+        "在互搏过程中，可以发现越往深处所涉及到的变量越多，考虑到的信息和可能性也就越全面。通过这样的训练，你更有可能敏锐地发现自己的逻辑漏洞，而不必总是等到别人驳斥你的时候才想方设法回击。\n\n"
+    </string>
+    <string name="large_text_content_2">
+        "在有了一定的互搏训练之后，自然就会注意到另一个事实：涉及到实践的一些论证，都不可避免地会触碰到一些“硬伤”，这些“硬伤”在论证过程会带来极大的劣势，因此在陈述相关事实的时候，必然需要避免将核心观点引致这些点上。"\n\n
+
+        "东野圭吾有一本小说叫《嫌疑犯X的献身》，里面的凶手用一具尸体换掉了真正的尸体，警察沿着线索顺利告破凶案，误认为已经抓住真凶了，实际上抓住的，只是另一起凶杀案的凶手——这种偷梁换柱的本领，就是偏向性陈述的关键。"\n\n
+
+        "好的引导性陈述并不是要使内容无懈可击，而恰好要留出一个鲜明的“漏洞”，使得对方会被诱导，而针对这个看上去的“漏洞”提问，忽视掉真正的破绽。因此，偏向性陈述，绝对不是要避讳你的观点的漏洞，而是要通过偏向性陈述，将受众的注意力转移。"\n\n
+
+        "比如，我想要让一个对知乎不感冒的用户感觉，使用知乎会使得效率提升。"\n\n
+
+        "如果直接抛出这个论点，那么槽点简直太多了——水知乎一个小时可能学习了五分钟/看了回答并没有什么卵用/……"\n
+        "一个失败的陈述就是对事说事：如果你不水的话，可以学到很多/看回答如果吸收了会很好——这类问题用一个条件状语来改善论点，但实际上却是很容易被听众排斥：既然是条件状语，那条件不成立时怎么办？"\n\n
+
+        "因此，偏向性陈述更多的时候，是在需要转移，而仅将一些潜移默化的影响时加之对方。"\n\n
+    </string>
+</resources>
