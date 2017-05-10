@@ -48,6 +48,7 @@
             android:background="@android:color/white">
 
             <ImageView
+                android:id="@+id/iv_shopping_cart"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center"
