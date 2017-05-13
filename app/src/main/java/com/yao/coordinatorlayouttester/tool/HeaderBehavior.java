@@ -2,8 +2,8 @@ package com.yao.coordinatorlayouttester.tool;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.util.AttributeSet;
@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.yao.coordinatorlayouttester.R;
 
@@ -34,14 +36,28 @@ public class HeaderBehavior<V extends View> extends CoordinatorLayout.Behavior<V
     private View mTitleBar;
     private View mHeaderContent;
     private ViewGroup mMiddleContent;
-    private TabLayout mTabLayout;
+    private LinearLayout mLlTabBar;
     private FrameLayout mSpace;
     private LinearLayout llLocation;
     private ImageView mIvShoppingCart;
 
+    private RelativeLayout mRlTabLeft;
+    private RelativeLayout mRlTabRight;
+    private TextView mTvTitleLeft;
+    private TextView mTvTitleRight;
+
 //    private int titleHeight;
     private int headerContentHeight;
     private int llLocationHeight;
+
+    private Paint mTextPaint;
+    private int titleLeftWidth;
+    private int titleRightWidth;
+    private int shortRlTabLeft;
+    private int shortRlTabRight;
+    private int longRlTabLeft;
+    private int longRlTabRight;
+    private int titleLeft_leftMargin;
 
     private int status = 0;
 
@@ -74,10 +90,14 @@ public class HeaderBehavior<V extends View> extends CoordinatorLayout.Behavior<V
             mTitleBar = parent.findViewById(R.id.title_bar);
             mHeaderContent = parent.findViewById(R.id.header_content);
             mMiddleContent = (ViewGroup) parent.findViewById(R.id.middle_content);
-            mTabLayout = (TabLayout) parent.findViewById(R.id.tab_layout);
+            mLlTabBar = (LinearLayout) parent.findViewById(R.id.ll_tab_bar);
             mSpace = (FrameLayout) parent.findViewById(R.id.space);
             llLocation = (LinearLayout) parent.findViewById(R.id.ll_location);
             mIvShoppingCart = (ImageView) parent.findViewById(R.id.iv_shopping_cart);
+            mRlTabLeft = (RelativeLayout) parent.findViewById(R.id.rl_tab_left);
+            mRlTabRight = (RelativeLayout) parent.findViewById(R.id.rl_tab_right);
+            mTvTitleLeft = (TextView) parent.findViewById(R.id.tv_title_left);
+            mTvTitleRight = (TextView) parent.findViewById(R.id.tv_title_right);
 
             llLocationHeight = llLocation.getMeasuredHeight();
             headerContentHeight = mHeaderContent.getMeasuredHeight();
@@ -90,9 +110,45 @@ public class HeaderBehavior<V extends View> extends CoordinatorLayout.Behavior<V
                 }
             });
 
+            //给MiddleContent设置跟标题栏一样的高度
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mMiddleContent.getLayoutParams();
-            params.height = mTabLayout.getHeight();
+            params.height = mLlTabBar.getHeight();
             mMiddleContent.setLayoutParams(params);
+
+            //创建画笔
+            mTextPaint = new Paint();
+            mTextPaint.setAntiAlias(true);
+            //根据tvTitleLeft的文字，获取tvTitleLeft纯文字宽度
+            mTextPaint.setTextSize(mTvTitleLeft.getTextSize());
+            titleLeftWidth = (int) mTextPaint.measureText(mTvTitleLeft.getText().toString());
+            //根据tvTitleRight的文字，根据tvTitleRight的文字
+            mTextPaint.setTextSize(mTvTitleRight.getTextSize());
+            titleRightWidth = (int) mTextPaint.measureText(mTvTitleRight.getText().toString());
+
+            //得到两个tab的原始宽度
+            longRlTabLeft = mRlTabLeft.getWidth();
+            longRlTabRight = mRlTabRight.getWidth();
+
+            //修改leftTab的宽度从weight=1的百分比方式到真是宽度方式
+            LinearLayout.LayoutParams tabLeftParams = (LinearLayout.LayoutParams) mRlTabLeft.getLayoutParams();
+            tabLeftParams.width = longRlTabLeft;
+            tabLeftParams.weight = 0;
+            mRlTabLeft.setLayoutParams(tabLeftParams);
+
+            //修改rightTab的宽度从weight=1的百分比方式到真是宽度方式
+            LinearLayout.LayoutParams tabRightParams = (LinearLayout.LayoutParams) mRlTabRight.getLayoutParams();
+            tabRightParams.width = longRlTabRight;
+            tabRightParams.weight = 0;
+            mRlTabRight.setLayoutParams(tabRightParams);
+
+            RelativeLayout.LayoutParams titleLeftParams = (RelativeLayout.LayoutParams) mTvTitleLeft.getLayoutParams();
+            titleLeft_leftMargin = titleLeftParams.leftMargin;
+
+
+
+            Log.e(TAG, "HeaderBehavior.java - onDependentViewChanged() ---------- titleLeftWidth:" + titleLeftWidth );
+            Log.e(TAG, "HeaderBehavior.java - onDependentViewChanged() ---------- titleRightWidth:" + titleRightWidth );
+
         }
         return false;
     }
@@ -117,14 +173,30 @@ public class HeaderBehavior<V extends View> extends CoordinatorLayout.Behavior<V
             if (status != STATUS_TOP) {
                 if (status == STATUS_BOTTOM) {
                     mSpace.removeAllViews();
-                    mMiddleContent.addView(mTabLayout);
+                    mMiddleContent.addView(mLlTabBar);
                 }
                 status = STATUS_TOP;
 
-                Log.e(TAG, "HeaderBehavior.java - onNestedPreScroll() ---------- 前期");
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) llLocation.getLayoutParams();
-                params.setMargins(0, 0, 0, 0);
-                llLocation.setLayoutParams(params);
+                Log.d(TAG, "HeaderBehavior.java - onNestedPreScroll() ---------- 前期");
+
+                //location位置回复
+                LinearLayout.LayoutParams locationParams = (LinearLayout.LayoutParams) llLocation.getLayoutParams();
+                locationParams.setMargins(0, 0, 0, 0);
+                llLocation.setLayoutParams(locationParams);
+
+                //leftTab宽度回复
+                LinearLayout.LayoutParams tabLeftParams = (LinearLayout.LayoutParams) mRlTabLeft.getLayoutParams();
+                tabLeftParams.width = longRlTabLeft;
+                mRlTabLeft.setLayoutParams(tabLeftParams);
+
+                //rightTab宽度回复
+                LinearLayout.LayoutParams tabRightParams = (LinearLayout.LayoutParams) mRlTabRight.getLayoutParams();
+                tabLeftParams.width = longRlTabRight;
+                mRlTabRight.setLayoutParams(tabRightParams);
+
+                //titleLeft的marginleft回复
+                RelativeLayout.LayoutParams titleLeftParams = (RelativeLayout.LayoutParams) mTvTitleLeft.getLayoutParams();
+                titleLeftParams.setMargins(titleLeft_leftMargin, 0, 0, 0);
 
                 //调整透明度
                 llLocation.setBackgroundColor(Color.WHITE);
@@ -136,44 +208,78 @@ public class HeaderBehavior<V extends View> extends CoordinatorLayout.Behavior<V
             if (status != STATUS_TRANSFORM) {
                 if (status == STATUS_BOTTOM) {
                     mSpace.removeAllViews();
-                    mMiddleContent.addView(mTabLayout);
+                    mMiddleContent.addView(mLlTabBar);
                 }
                 status = STATUS_TRANSFORM;
-                Log.e(TAG, "HeaderBehavior.java - onNestedPreScroll() ---------- 中期");
+                Log.d(TAG, "HeaderBehavior.java - onNestedPreScroll() ---------- 中期");
                 //调整透明度
                 llLocation.setBackgroundColor(Color.TRANSPARENT);
                 mSpace.setBackgroundColor(Color.TRANSPARENT);
             }
 
-            //平移到屏幕左侧
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) llLocation.getLayoutParams();
+
+
+            //上滑到下，比率由0到1的过程。下滑到上，比率由1到0。
+            Log.d(TAG, "HeaderBehavior.java - onNestedPreScroll() ---------- " + llLocation.getWidth() * (headerContentHeight - target.getScrollY() - mTitleBar.getBottom()));
+            float ratio = (target.getScrollY() + mTitleBar.getBottom() - mHeaderContent.getBottom()) * 1.0f / mTitleBar.getBottom() ;
+            Log.d(TAG, "HeaderBehavior.java - onNestedPreScroll() ---------- ratio:" + ratio);
+
+
+            //location平移到屏幕左侧
             //当target.getScrollY() + mTitleBar.getBottom() = mHeaderContent.getBottom()， llLocation的marginLeft为0
             //当target.getScrollY() = mTitleBar.getBottom()， llLocation的marginLeft为-llLocation.getWidth()
-            Log.d(TAG, "HeaderBehavior.java - onNestedPreScroll() ---------- " + llLocation.getWidth() * (headerContentHeight - target.getScrollY() - mTitleBar.getBottom()));
-            float ratio = (mHeaderContent.getBottom() - (target.getScrollY() + mTitleBar.getBottom())) * 1.0f / mTitleBar.getBottom() ;
-            Log.d(TAG, "HeaderBehavior.java - onNestedPreScroll() ---------- ratio:" + ratio);
-            params.setMargins((int) (llLocation.getWidth() * ratio), 0, 0, 0);
-            llLocation.setLayoutParams(params);
+            LinearLayout.LayoutParams locationParams = (LinearLayout.LayoutParams) llLocation.getLayoutParams();
+            locationParams.setMargins((int) (llLocation.getWidth() * -ratio), 0, 0, 0);
+            llLocation.setLayoutParams(locationParams);
+            
+            //leftTab宽度变小
+            LinearLayout.LayoutParams tabLeftParams = (LinearLayout.LayoutParams) mRlTabLeft.getLayoutParams();
+            tabLeftParams.width = (int) (titleLeftWidth + (longRlTabLeft - titleLeftWidth) * (1-ratio));
+            mRlTabLeft.setLayoutParams(tabLeftParams);
+
+            //rightTab宽度变小
+            LinearLayout.LayoutParams tabRightParams = (LinearLayout.LayoutParams) mRlTabRight.getLayoutParams();
+            tabRightParams.width = (int) (titleRightWidth + (longRlTabRight - titleRightWidth) * (1-ratio));
+            mRlTabLeft.setLayoutParams(tabRightParams);
+
+            //titleLeft的marginleft逐渐变小
+            int detal = (int) ((longRlTabRight - titleRightWidth) * (ratio));
+            RelativeLayout.LayoutParams titleLeftParams = (RelativeLayout.LayoutParams) mTvTitleLeft.getLayoutParams();
+            titleLeftParams.setMargins(detal>titleLeft_leftMargin ? 0 : titleLeft_leftMargin - detal, 0, 0, 0);
         } else if (target.getScrollY() > mHeaderContent.getBottom()) {
 //            mSpace.addView(mTabLayout);
             if (status != STATUS_BOTTOM) {
                 status = STATUS_BOTTOM;
-                Log.e(TAG, "HeaderBehavior.java - onNestedPreScroll() ---------- 后期");
+                Log.d(TAG, "HeaderBehavior.java - onNestedPreScroll() ---------- 后期");
 
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) llLocation.getLayoutParams();
-                params.setMargins(llLocation.getWidth() * -1, 0, 0, 0);
-                llLocation.setLayoutParams(params);
+                //location位置左移到不见
+                LinearLayout.LayoutParams locationParams = (LinearLayout.LayoutParams) llLocation.getLayoutParams();
+                locationParams.setMargins(llLocation.getWidth() * -1, 0, 0, 0);
+                llLocation.setLayoutParams(locationParams);
+
+                //leftTab宽度缩小
+                LinearLayout.LayoutParams tabLeftParams = (LinearLayout.LayoutParams) mRlTabLeft.getLayoutParams();
+                tabLeftParams.width = titleLeftWidth;
+                mRlTabLeft.setLayoutParams(tabLeftParams);
+
+                //rightTab宽度缩小
+                LinearLayout.LayoutParams tabRightParams = (LinearLayout.LayoutParams) mRlTabRight.getLayoutParams();
+                tabLeftParams.width = titleRightWidth;
+                mRlTabRight.setLayoutParams(tabRightParams);
+
+                //titleLeft的marginleft变成0
+                RelativeLayout.LayoutParams titleLeftParams = (RelativeLayout.LayoutParams) mTvTitleLeft.getLayoutParams();
+                titleLeftParams.setMargins(0, 0, 0, 0);
+
+
+
 
                 mMiddleContent.removeAllViews();
-                Log.e(TAG, "HeaderBehavior.java - onNestedPreScroll() ---------- " + mTabLayout.getParent());
-                mSpace.addView(mTabLayout);
+                mSpace.addView(mLlTabBar);
 
                 llLocation.setBackgroundColor(Color.WHITE);
                 mSpace.setBackgroundColor(Color.WHITE);
             }
-
-
-
         }
 
     }
