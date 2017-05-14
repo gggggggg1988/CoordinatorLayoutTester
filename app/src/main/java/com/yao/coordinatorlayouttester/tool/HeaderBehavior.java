@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -45,16 +46,14 @@ public class HeaderBehavior<V extends View> extends CoordinatorLayout.Behavior<V
     private RelativeLayout mRlTabRight;
     private TextView mTvTitleLeft;
     private TextView mTvTitleRight;
+    private TextView mTvSubTitleLeft;
 
-//    private int titleHeight;
     private int headerContentHeight;
     private int llLocationHeight;
 
     private Paint mTextPaint;
     private int titleLeftWidth;
     private int titleRightWidth;
-    private int shortRlTabLeft;
-    private int shortRlTabRight;
     private int longRlTabLeft;
     private int longRlTabRight;
     private int titleLeft_leftMargin;
@@ -98,6 +97,7 @@ public class HeaderBehavior<V extends View> extends CoordinatorLayout.Behavior<V
             mRlTabRight = (RelativeLayout) parent.findViewById(R.id.rl_tab_right);
             mTvTitleLeft = (TextView) parent.findViewById(R.id.tv_title_left);
             mTvTitleRight = (TextView) parent.findViewById(R.id.tv_title_right);
+            mTvSubTitleLeft = (TextView) parent.findViewById(R.id.tv_sub_title_left);
 
             llLocationHeight = llLocation.getMeasuredHeight();
             headerContentHeight = mHeaderContent.getMeasuredHeight();
@@ -105,8 +105,8 @@ public class HeaderBehavior<V extends View> extends CoordinatorLayout.Behavior<V
             mIvShoppingCart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.e(TAG, "HeaderBehavior.java - onClick() ---------- mMiddleContent:" + (mMiddleContent.getChildCount()>0 ? mMiddleContent.getChildAt(0) : "empty"));
-                    Log.e(TAG, "HeaderBehavior.java - onClick() ---------- mSpace:" + (mSpace.getChildCount()>0 ? mSpace.getChildAt(0) : "empty"));
+                    Log.d(TAG, "HeaderBehavior.java - onClick() ---------- mMiddleContent:" + (mMiddleContent.getChildCount()>0 ? mMiddleContent.getChildAt(0) : "empty"));
+                    Log.d(TAG, "HeaderBehavior.java - onClick() ---------- mSpace:" + (mSpace.getChildCount()>0 ? mSpace.getChildAt(0) : "empty"));
                 }
             });
 
@@ -145,9 +145,27 @@ public class HeaderBehavior<V extends View> extends CoordinatorLayout.Behavior<V
             titleLeft_leftMargin = titleLeftParams.leftMargin;
 
 
+            if (dependency instanceof  NestedScrollView) {
+                ((NestedScrollView)dependency).setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                    @Override
+                    public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                        Log.d(TAG, "HeaderBehavior.java - onScrollChange() ---------- scrollX:" + scrollX + "  scrollY:"+scrollY + "  oldScrollX:"+oldScrollX  + "  oldScrollY:"+oldScrollY);
+                        refreshUi(v);
+                    }
+                });
+            } else if (dependency instanceof RecyclerView) {
+                ((RecyclerView)dependency).addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                        Log.d(TAG, "HeaderBehavior.java - onScrollStateChanged() ---------- newState:" + newState );
+                    }
 
-            Log.e(TAG, "HeaderBehavior.java - onDependentViewChanged() ---------- titleLeftWidth:" + titleLeftWidth );
-            Log.e(TAG, "HeaderBehavior.java - onDependentViewChanged() ---------- titleRightWidth:" + titleRightWidth );
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        Log.d(TAG, "HeaderBehavior.java - onScrolled() ---------- dx:" + dx + "  dy:" + dy );
+                    }
+                });
+            }
 
         }
         return false;
@@ -167,6 +185,16 @@ public class HeaderBehavior<V extends View> extends CoordinatorLayout.Behavior<V
                 + "   target:" + target.getClass().getSimpleName()
                 + "   dx:" + dx + "   dy:" + dy
                 + "   consumed[0]:" + consumed[0] + "   consued[1]:" + consumed[1]);
+//        refreshUi(target);
+    }
+
+
+    @Override
+    public boolean onNestedFling(CoordinatorLayout coordinatorLayout, V child, View target, float velocityX, float velocityY, boolean consumed) {
+        return true;
+    }
+
+    private void refreshUi(View target) {
         Log.d(TAG, "HeaderBehavior.java - onNestedPreScroll() ---------- target.getScrollY()：" + target.getScrollY() + "   headerContentHeight:" + headerContentHeight);
         if (target.getScrollY() + mTitleBar.getBottom() < mHeaderContent.getBottom()) {
             //滑的太快会是llLocation显示不完全，所以需要这里复位它的位置
@@ -202,7 +230,8 @@ public class HeaderBehavior<V extends View> extends CoordinatorLayout.Behavior<V
                 llLocation.setBackgroundColor(Color.WHITE);
                 mSpace.setBackgroundColor(Color.WHITE);
 
-
+                //subTitleLeft的透明度
+                mTvSubTitleLeft.setAlpha(1);
             }
         } else if (target.getScrollY() + mTitleBar.getBottom() > mHeaderContent.getBottom() && target.getScrollY() < mHeaderContent.getBottom()) {
             if (status != STATUS_TRANSFORM) {
@@ -231,7 +260,7 @@ public class HeaderBehavior<V extends View> extends CoordinatorLayout.Behavior<V
             LinearLayout.LayoutParams locationParams = (LinearLayout.LayoutParams) llLocation.getLayoutParams();
             locationParams.setMargins((int) (llLocation.getWidth() * -ratio), 0, 0, 0);
             llLocation.setLayoutParams(locationParams);
-            
+
             //leftTab宽度变小
             LinearLayout.LayoutParams tabLeftParams = (LinearLayout.LayoutParams) mRlTabLeft.getLayoutParams();
             tabLeftParams.width = (int) (titleLeftWidth + (longRlTabLeft - titleLeftWidth) * (1-ratio));
@@ -246,7 +275,11 @@ public class HeaderBehavior<V extends View> extends CoordinatorLayout.Behavior<V
             int detal = (int) ((longRlTabRight - titleRightWidth) * (ratio));
             RelativeLayout.LayoutParams titleLeftParams = (RelativeLayout.LayoutParams) mTvTitleLeft.getLayoutParams();
             titleLeftParams.setMargins(detal>titleLeft_leftMargin ? 0 : titleLeft_leftMargin - detal, 0, 0, 0);
-        } else if (target.getScrollY() > mHeaderContent.getBottom()) {
+
+            //subTitleLeft的透明度
+            mTvSubTitleLeft.setAlpha(1-ratio);
+
+        } else if (target.getScrollY()> mHeaderContent.getBottom()) {
 //            mSpace.addView(mTabLayout);
             if (status != STATUS_BOTTOM) {
                 status = STATUS_BOTTOM;
@@ -272,15 +305,15 @@ public class HeaderBehavior<V extends View> extends CoordinatorLayout.Behavior<V
                 titleLeftParams.setMargins(0, 0, 0, 0);
 
 
-
-
                 mMiddleContent.removeAllViews();
                 mSpace.addView(mLlTabBar);
 
                 llLocation.setBackgroundColor(Color.WHITE);
                 mSpace.setBackgroundColor(Color.WHITE);
+
+                //subTitleLeft的透明度
+                mTvSubTitleLeft.setAlpha(0);
             }
         }
-
     }
 }

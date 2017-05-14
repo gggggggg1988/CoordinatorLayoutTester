@@ -42,37 +42,38 @@
             android:layout_height="match_parent"
             android:layout_weight="1"/>
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@android:color/white">
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="@dimen/title_bar_height"
+            android:layout_height="@dimen/title_bar_height"
+            android:layout_gravity="center"
+            android:background="@android:color/white"
+            android:padding="13dp"
+            android:src="@drawable/search"/>
 
-            <ImageView
-                android:id="@+id/iv_shopping_cart"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/shopping_cart_empty"/>
-
-        </FrameLayout>
+        <ImageView
+            android:id="@+id/iv_shopping_cart"
+            android:layout_width="@dimen/title_bar_height"
+            android:layout_height="@dimen/title_bar_height"
+            android:layout_gravity="center"
+            android:background="@android:color/white"
+            android:padding="13dp"
+            android:src="@drawable/shopping_cart_empty"/>
 
 
     </LinearLayout>
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <android.support.v4.widget.Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/title_bar_height"/>
+            android:clipToPadding="true"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/title_bar_height">
 
             <TextView
                 android:id="@+id/header_content"
@@ -110,8 +111,8 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="15dp"
-                            android:text="附近商家"
                             android:maxLines="1"
+                            android:text="附近商家"
                             android:textColor="@drawable/selector_tab_text"
                             android:textSize="18dp"
                             android:textStyle="bold"/>
@@ -121,9 +122,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
                             android:layout_toRightOf="@id/tv_title_left"
-                            android:text="(1024家)"
                             android:maxLines="1"
+                            android:text="(1024家)"
                             android:textColor="@drawable/selector_tab_text"
                             android:textSize="12dp"/>
 
@@ -164,23 +166,19 @@
                 </LinearLayout>
             </FrameLayout>
 
-
-            <TextView
-                android:id="@+id/tv_content_1"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view_left"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="@string/large_text_content_1"
-                android:textSize="20dp"/>
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"/>
 
-            <TextView
-                android:id="@+id/tv_content_2"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view_right"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="@string/large_text_content_2"
-                android:textSize="20dp"
-                android:visibility="gone"/>
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"/>
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
