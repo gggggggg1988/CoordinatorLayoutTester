@@ -40,6 +40,7 @@ public class CoordinatorRecyclerViewActivity extends AppCompatActivity implement
         ButterKnife.bind(this);
         mRecyclerViewLeft.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerViewLeft.setAdapter(new NormalRecyclerViewAdapter(this, getResources().getStringArray(R.array.titles)));
+        mRecyclerViewLeft.setNestedScrollingEnabled(false);
 
 
         mRecyclerViewRight.setLayoutManager(new LinearLayoutManager(this));
@@ -47,6 +48,8 @@ public class CoordinatorRecyclerViewActivity extends AppCompatActivity implement
         mRecyclerViewRight.setNestedScrollingEnabled(false);
 
         mRlTabLeft.setSelected(true);
+        mRecyclerViewLeft.setVisibility(View.VISIBLE);
+        mRecyclerViewRight.setVisibility(View.GONE);
         mRlTabLeft.setOnClickListener(this);
         mRlTabRight.setOnClickListener(this);
 
