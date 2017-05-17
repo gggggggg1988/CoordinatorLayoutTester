@@ -34,7 +34,6 @@ public class NormalRecyclerViewAdapter extends RecyclerView.Adapter<NormalRecycl
     @Override
     public void onBindViewHolder(NormalTextViewHolder holder, int position) {
         holder.mTextView.setText(mTitles[position]);
-        Log.e("YAO", "NormalRecyclerViewAdapter.java - onBindViewHolder() ---------- position" + position);
     }
 
     @Override
